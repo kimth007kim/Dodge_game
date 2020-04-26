@@ -8,6 +8,23 @@ body {
   align-items: center;
   padding: 50px 0px;
 }
+.btntop {
+  padding-top: 50px;
+}
+.leftbtn {
+  width: 0px;
+  height: 0px;
+  border-top: 15px solid transparent;
+  border-right: 30px solid red;
+  border-bottom: 15px solid transparent;
+}
+.rightbtn {
+  width: 0px;
+  height: 0px;
+  border-top: 15px solid transparent;
+  border-left: 30px solid red;
+  border-bottom: 15px solid transparent;
+}
 .canvas {
   background-color: black;
   width: 600px;
