@@ -11,6 +11,10 @@ body {
 .btntop {
   padding-top: 50px;
 }
+
+.Imgcss {
+  visibility: hidden;
+}
 .leftbtn {
   width: 0px;
   height: 0px;
@@ -26,7 +30,8 @@ body {
   border-bottom: 15px solid transparent;
 }
 .canvas {
-  background-color: black;
+  /* background-color: black; */
   width: 600px;
-  height: 600x;
+  height: 420px;
+  border: solid;
 }
