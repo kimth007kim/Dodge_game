@@ -9,11 +9,28 @@ body {
   padding: 50px 0px;
 }
 .btntop {
-  padding-top: 50px;
+  /* padding-top: px; */
 }
-
+button {
+  all: unset;
+  outline: none;
+  cursor: pointer;
+  /* box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
+  /* border: 0;
+  outline: 0; */
+}
 .Imgcss {
   visibility: hidden;
+}
+.topbtn {
+  width: 0px;
+  height: 0px;
+  border-bottom: 30px solid red;
+  border-right: 15px solid transparent;
+  border-left: 15px solid transparent;
+  /* box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 .leftbtn {
   width: 0px;
@@ -21,6 +38,8 @@ body {
   border-top: 15px solid transparent;
   border-right: 30px solid red;
   border-bottom: 15px solid transparent;
+  /* box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
+  margin-right: 30px;
 }
 .rightbtn {
   width: 0px;
@@ -28,10 +47,21 @@ body {
   border-top: 15px solid transparent;
   border-left: 30px solid red;
   border-bottom: 15px solid transparent;
+  /* box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
+  margin-left: 20px;
+}
+.bottombtn {
+  width: 0px;
+  height: 0px;
+  border-top: 30px solid red;
+  border-right: 15px solid transparent;
+  border-left: 15px solid transparent;
+  /* box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); */
+  margin-top: 10px;
 }
 .canvas {
   /* background-color: black; */
-  width: 600px;
-  height: 420px;
-  border: solid;
+  /* border: solid; */
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  /* z-index: auto; */
 }
