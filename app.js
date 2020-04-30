@@ -178,6 +178,7 @@ function enemyDraw() {
     }
   }
 }
+
 function enemyMove() {
   for (var c = 0; c < round; c++) {
     for (var r = 0; r < finish; r++) {
