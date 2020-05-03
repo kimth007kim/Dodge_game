@@ -170,6 +170,7 @@ function enemyDraw() {
       var efishWidth = f.twidth;
       var efishHeight = f.theight;
       ctx.beginPath();
+      ctx.moveTo(efishX, efishY);
       ctx.rect(efishX, efishY, efishWidth, efishHeight);
       // var random = "#" + Math.round(Math.random() * 0xffffff).toString(16);
       ctx.fillStyle = efishColor;
@@ -190,7 +191,9 @@ function enemyMove() {
       }
     }
   }
+  MakeEnemy();
 }
+
 function drawBackgorund() {
   ctx.drawImage(img, 0, 0, 600, 420);
 }
@@ -221,9 +224,10 @@ function gameover() {
   document.location.reload();
 }
 
-function getRandSec() {
-  return Math.floor(Math.random() * 120) + 1;
-} //그리고 2분마다 실행하는 인터벌 함수를 정의한다.
+// function getRandSec() {
+//   return Math.floor(Math.random() * 120) + 1;
+// }
+//그리고 2분마다 실행하는 인터벌 함수를 정의한다.
 
 // var _interval = setInterval(targetFunction, 120000);
 

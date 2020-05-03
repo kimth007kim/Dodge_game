@@ -2,11 +2,9 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>캔바스 샘플#2</title>
+    <title>https://blog.naver.com/ephraimdrlee</title>
   </head>
   <body>
-    https://blog.naver.com/ephraimdrlee / 크레이의 세컨드라이프 탐구생활 네이버
-    블로그<br />
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
       // 기본 초기화
@@ -19,6 +17,7 @@
       var snow = Array();
 
       // 초기화
+      //객체를 생성하는 함수
       function Init() {
         if (init == false) {
           myCanvas = document.getElementById("MyCanvas");
@@ -37,7 +36,9 @@
 
       // draw 이벤트
       function onDraw() {
-        if (init == false) return;
+        if (init == false) {
+          return;
+        }
         Context.fillStyle = "#000";
         Context.fillRect(0, 0, myCanvas.width - 1, myCanvas.height - 1);
         for (i = 0; i < snow_max; ++i) {
@@ -60,7 +61,9 @@
       function Run() {
         for (i = 0; i < snow_max; ++i) {
           snow[i].y += snow[i].size * 0.2;
-          if (snow[i].y >= myCanvas.height) snow[i].y = -10;
+          if (snow[i].y >= myCanvas.height) {
+            snow[i].y = -10;
+          }
         }
         onDraw();
       }
