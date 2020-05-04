@@ -8,13 +8,14 @@ const img = document.getElementById("myImage");
 
 var round = 3; //라운드 처음에는 1
 var finish = 5; //라운드가 끝나는 시점
-var status = 0;
 
 var x = canvas.width / 2;
 var y = canvas.height / 2;
 var first = 20;
 var mewidth = first;
 var meheight = first;
+
+var score = 0;
 
 //테스트용
 var tx = 10;
@@ -28,77 +29,33 @@ var max = 500; //500중에 하나의
 var rand = Math.random() * 1.0; //난수 생성
 var Rint = 0;
 var erand = 0;
+var grow = 0.2;
 
-// var efish = [];
-// for (var c = 0; c < round; c++) {
-//   efish[c] = [];
-//   for (var r = 0; r < finish; r++) {
-//     var randwh = Math.floor(Math.random() * 20) + 1;
-//     var stp = Math.floor(Math.random() * 2) + 1;
-//     var yMaker = Math.random() * canvas.height - randwh; //(int) y축의 좌표를 랜덤으로 받아와야한다.
-//     var speedMaker = Math.random() * 5;
-//     if (stp == 1) {
-//       var xMaker = 0;
-//     } else if (stp == 2) {
-//       var xMaker = canvas.width - randwh;
-//     }
-//     efish[c][r] = {
-//       twidth: randwh,
-//       theight: randwh,
-//       tx: xMaker,
-//       ty: yMaker,
-//       status: 1,
-//       tspeed: speedMaker,
-//       startPoint: stp,
-//       tcolor: "#" + Math.round(Math.random() * 0xffffff).toString(16),
-//     };
-//   }
-// }
+var fish_max = 150;
+var efish = Array();
 
-var efish = [];
-for (var c = 0; c < round; c++) {
-  efish[c] = [];
-  for (var r = 0; r < finish; r++) {
-    efish[c][r] = {
-      twidth: 0,
-      theight: 0,
-      tx: 0,
-      ty: 0,
-      status: 1,
-      tspeed: 0,
-      startPoint: 0,
-      tcolor: 0,
-    };
-  }
-}
-
-function MakeEnemy() {
-  for (var c = 0; c < round; c++) {
-    for (var r = 0; r < finish; r++) {
-      var f = efish[c][r];
-      var randwh = Math.floor(Math.random() * 20) + 1;
-      var stp = Math.floor(Math.random() * 2) + 1;
-      var yMaker = Math.random() * canvas.height - randwh; //(int) y축의 좌표를 랜덤으로 받아와야한다.
-      var speedMaker = Math.random() * 5;
-      if (stp == 1) {
-        var xMaker = 0;
-      } else if (stp == 2) {
-        var xMaker = canvas.width - randwh;
-      }
-      efish[c][r] = {
-        twidth: randwh,
-        theight: randwh,
-        tx: xMaker,
-        ty: yMaker,
-        status: 1,
-        tspeed: speedMaker,
-        startPoint: stp,
-        tcolor: "#" + Math.round(Math.random() * 0xffffff).toString(16),
-      };
-      // alert(efish[c]);
+function Init() {
+  for (c = 0; c < fish_max; c++) {
+    var obj = new Object();
+    var stp = Math.floor(Math.random() * 2) + 1;
+    var randwht = Math.floor(Math.random() * 40) + 1;
+    var xMaker = 1;
+    if (stp == 1) {
+      xMaker = 0;
+    } else if (stp == 2) {
+      xMaker = canvas.width - randwht;
     }
+    obj.randwh = randwht;
+    obj.tx = xMaker;
+    obj.ty = Math.random() * canvas.height - randwht;
+    obj.status = 1;
+    obj.speed = Math.floor(Math.random() * 3) + 2;
+    obj.startPoint = stp;
+    obj.tcolor = "#" + Math.round(Math.random() * 0xffffff).toString(16);
+    efish.push(obj);
   }
 }
+
 var rightPressed = false;
 var leftPressed = false;
 var topPressed = false;
@@ -161,19 +118,13 @@ function drawBall() {
 }
 
 function enemyDraw() {
-  for (var c = 0; c < round; c++) {
-    for (var r = 0; r < finish; r++) {
-      if (efish[c][r].status == 1) var f = efish[c][r];
-      var efishColor = f.tcolor;
-      var efishX = f.tx;
-      var efishY = f.ty;
-      var efishWidth = f.twidth;
-      var efishHeight = f.theight;
+  for (var c = 0; c < fish_max; c++) {
+    if (efish[c].status == 1) {
       ctx.beginPath();
-      ctx.moveTo(efishX, efishY);
-      ctx.rect(efishX, efishY, efishWidth, efishHeight);
+      ctx.moveTo(efish[c].tx, efish[c].ty);
+      ctx.rect(efish[c].tx, efish[c].ty, efish[c].randwh, efish[c].randwh);
       // var random = "#" + Math.round(Math.random() * 0xffffff).toString(16);
-      ctx.fillStyle = efishColor;
+      ctx.fillStyle = efish[c].tcolor;
       ctx.fill();
       ctx.closePath();
     }
@@ -181,17 +132,16 @@ function enemyDraw() {
 }
 
 function enemyMove() {
-  for (var c = 0; c < round; c++) {
-    for (var r = 0; r < finish; r++) {
-      var f = efish[c][r];
-      if (f.startPoint == 1) {
-        f.tx += tspeed;
-      } else if (f.startPoint == 2) {
-        f.tx -= tspeed;
-      }
+  for (var c = 0; c < fish_max; c++) {
+    if (efish[c].startPoint == 1) {
+      efish[c].tx += efish[c].randwh * 0.05;
+      //   efish[c].tx += 60 / efish[c].randwh;
+    } else if (efish[c].startPoint == 2) {
+      efish[c].tx -= efish[c].randwh * 0.05;
+      //   efish[c].tx -= 60 / efish[c].randwh;
     }
   }
-  MakeEnemy();
+  enemyDraw();
 }
 
 function drawBackgorund() {
@@ -199,57 +149,63 @@ function drawBackgorund() {
 }
 
 function collisionDetection() {
-  for (var c = 0; c < round; c++) {
-    for (var r = 0; r < finish; r++) {
-      var f = efish[c][r];
+  for (var c = 0; c < fish_max; c++) {
+    var f = efish[c];
+    // console.log(efish[c].status);//동작 완료
+    if (f.status == 1) {
       if (
-        f.status == 1 &&
-        x > f.tx &&
-        x < f.tx + f.twidth &&
-        y > f.ty &&
-        y < f.ty + f.theight
+        (x >= f.tx &&
+          x <= f.tx + f.randwh &&
+          y >= f.ty &&
+          y <= f.ty + f.randwh) ||
+        (x >= f.tx &&
+          x <= f.tx + f.randwh &&
+          y + meheight >= f.ty &&
+          y + meheight <= f.ty + f.randwh) ||
+        (x + mewidth >= f.tx &&
+          x + mewidth <= f.tx + f.randwh &&
+          y >= f.ty &&
+          y <= f.ty + f.randwh) ||
+        (x + mewidth >= f.tx &&
+          x + mewidth <= f.tx + f.randwh &&
+          y + meheight >= f.ty &&
+          y + meheight <= f.ty + f.randwh)
       ) {
-        if (first >= f.randwh) {
-          fisrt + 2;
-          f.status == 0;
-        } else {
+        if (mewidth < f.randwh) {
           gameover();
+          document.location.reload();
+        } else {
+          mewidth += grow;
+          meheight += grow;
+          score++;
+          f.status = 0;
         }
+      }
+      if (efish[c].tx > x && efish[c].tx + efish[c].randwht < x) {
+        console.log("건드렸지롱");
       }
     }
   }
 }
+
+function drawScore() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Score: " + score, 8, 20);
+}
+
 function gameover() {
   alert("Game OVER");
   document.location.reload();
 }
 
-// function getRandSec() {
-//   return Math.floor(Math.random() * 120) + 1;
-// }
-//그리고 2분마다 실행하는 인터벌 함수를 정의한다.
-
-// var _interval = setInterval(targetFunction, 120000);
-
-//실행할 함수 내에서 setTimeout 으로 실행하되 시간 값을 랜덤으로 준다.
-
-// function targetFunction() {
-//   var sec = getRandSec();
-//   console.log(sec);
-//   if (_autoStartStatus) {
-//     setTimeout(function () {
-//       //여기가 실제로 실행되는 비지니스 로직.
-//     }, sec * 1000);
-//   }
-// }
-
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackgorund();
+  Init();
   drawBall();
-  enemyDraw();
+  drawScore();
   enemyMove();
-
   collisionDetection();
 
   if (rightPressed && x < canvas.width - mewidth) {
@@ -262,4 +218,4 @@ function draw() {
     y += 3;
   }
 }
-setInterval(draw, 100);
+setInterval(draw, 20);

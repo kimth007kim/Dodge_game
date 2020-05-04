@@ -8,13 +8,14 @@ const img = document.getElementById("myImage");
 
 var round = 3; //라운드 처음에는 1
 var finish = 5; //라운드가 끝나는 시점
-var status = 0;
 
 var x = canvas.width / 2;
 var y = canvas.height / 2;
 var first = 20;
 var mewidth = first;
 var meheight = first;
+
+var score = 0;
 
 //테스트용
 var tx = 10;
@@ -30,7 +31,7 @@ var Rint = 0;
 var erand = 0;
 var grow = 0.2;
 
-var fish_max = 150;
+var fish_max = 10;
 var efish = Array();
 
 function Init() {
@@ -45,7 +46,7 @@ function Init() {
       xMaker = canvas.width - randwht;
     }
     obj.randwh = randwht;
-    obj.tx = xMaker;
+    obj.tx = Math.random() * canvas.width - randwht;
     obj.ty = Math.random() * canvas.height - randwht;
     obj.status = 1;
     obj.speed = Math.floor(Math.random() * 3) + 2;
@@ -130,18 +131,18 @@ function enemyDraw() {
   }
 }
 
-function enemyMove() {
-  for (var c = 0; c < fish_max; c++) {
-    if (efish[c].startPoint == 1) {
-      efish[c].tx += efish[c].randwh * 0.2;
-      //   efish[c].tx += 60 / efish[c].randwh;
-    } else if (efish[c].startPoint == 2) {
-      efish[c].tx -= efish[c].randwh * 0.2;
-      //   efish[c].tx -= 60 / efish[c].randwh;
-    }
-  }
-  enemyDraw();
-}
+// function enemyMove() {
+//   for (var c = 0; c < fish_max; c++) {
+//     if (efish[c].startPoint == 1) {
+//       efish[c].tx += efish[c].randwh * 0.2;
+//       //   efish[c].tx += 60 / efish[c].randwh;
+//     } else if (efish[c].startPoint == 2) {
+//       efish[c].tx -= efish[c].randwh * 0.2;
+//       //   efish[c].tx -= 60 / efish[c].randwh;
+//     }
+//   }
+//   enemyDraw();
+// }
 
 function drawBackgorund() {
   ctx.drawImage(img, 0, 0, 600, 420);
@@ -149,28 +150,41 @@ function drawBackgorund() {
 
 function collisionDetection() {
   for (var c = 0; c < fish_max; c++) {
-    if (efish[c].status == 1) {
+    var f = efish[c];
+    // console.log(efish[c].status);//동작 완료
+    if (f.status == 1) {
       if (
-        x > efish[c].tx &&
-        x < efish[c].tx + efish[c].twidth &&
-        y > efish[c].ty &&
-        y < efish[c].ty + efish[c].theight
+        (x >= f.tx &&
+          x <= f.tx + f.randwh &&
+          y >= f.ty &&
+          y <= f.ty + f.randwh) ||
+        (x >= f.tx &&
+          x <= f.tx + f.randwh &&
+          y + meheight >= f.ty &&
+          y + meheight <= f.ty + f.randwh) ||
+        (x + mewidth >= f.tx &&
+          x + mewidth <= f.tx + f.randwh &&
+          y >= f.ty &&
+          y <= f.ty + f.randwh) ||
+        (x + mewidth >= f.tx &&
+          x + mewidth <= f.tx + f.randwh &&
+          y + meheight >= f.ty &&
+          y + meheight <= f.ty + f.randwh)
       ) {
-        console.log("a");
-        if (mewidth < efish[c].randwh) {
-          gameover();
-        } else {
-          mewidth += grow;
-          meheight += grow;
-          efish[c].status = 0;
-        }
+        console.log("aaa");
+        // efish[c].status = 0;
+        // if (mewidth < f.randwh) {
+        //   gameover();
+        //   document.location.reload();
+        // } else {
+        //   mewidth += grow;
+        //   meheight += grow;
+        //   score++;
+        //   f.status = 0;
+        // }
       }
     }
   }
-}
-function gameover() {
-  alert("Game OVER");
-  document.location.reload();
 }
 
 function draw() {
@@ -178,8 +192,9 @@ function draw() {
   drawBackgorund();
   Init();
   drawBall();
-  enemyMove();
+  //   enemyMove();
   collisionDetection();
+  enemyDraw();
 
   if (rightPressed && x < canvas.width - mewidth) {
     x += 3;
